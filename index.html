@@ -1,4 +1,3 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>مصروفاتي</title>
 <meta name="theme-color" content="#0d6b55">
 <meta name="description" content="Mina utgifter / مصروفاتي - personal finance, stored only on your device">
@@ -245,14 +244,16 @@ input:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px;bord
 .rcard{border-radius:16px;padding:12px;color:#fff;display:flex;flex-direction:column;gap:2px}
 .rcard b{font-size:20px}.rcard span{font-size:12px;opacity:.92}
 .rc1{background:linear-gradient(135deg,#0d6b55,#2f9e7a)}.rc2{background:linear-gradient(135deg,#2f6fb3,#4aa0d8)}.rc3{background:linear-gradient(135deg,#8a4fa8,#c25a8a)}.rc4{background:linear-gradient(135deg,#c4872a,#e0a64a)}
-.outl{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-items:end;height:150px}
-.outl .m{display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
+.outl{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-items:end;margin-bottom:10px}
+.outl .m{display:flex;flex-direction:column;align-items:center;gap:4px;justify-content:flex-end}
 .outl .bars{display:flex;gap:4px;align-items:flex-end;height:110px}
 .outl .bars i{display:block;width:18px;border-radius:6px 6px 2px 2px;min-height:3px}
 .outl .m small{color:var(--muted);font-size:11.5px;text-align:center}
 .streak{display:flex;flex-wrap:wrap;gap:4px}.streak i{width:22px;height:22px;border-radius:7px;background:var(--surface-2);display:block;font-style:normal;font-size:11px;text-align:center;line-height:22px;color:var(--muted)}
 .streak i.on{background:linear-gradient(135deg,#0d6b55,#2f9e7a);color:#fff}
 .streak i.today{outline:2px solid var(--accent)}
+.row.txr{grid-template-columns:minmax(0,1fr) auto}.row.txr .acts{grid-column:1/-1;display:flex;gap:6px;flex-wrap:wrap}@media (min-width:640px){.row.txr{grid-template-columns:minmax(0,1fr) auto auto}.row.txr .acts{grid-column:auto}}
+.remc{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:8px 10px;border-radius:14px;background:var(--surface);border:1px solid var(--line);margin-bottom:10px;font-size:13px}.remc .chip{display:inline-flex;gap:5px;align-items:center;padding:3px 9px}.remc .chip.bad{background:var(--bad-soft);color:var(--bad)}.remc .chip.warn{background:var(--warn-soft);color:var(--warn)}
 </style>
 
 <div class="wrap">
@@ -336,7 +337,7 @@ input:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px;bord
   </nav>
   <div id="remind"></div>
   <section id="view"></section>
-  <div class="hint" style="text-align:center" dir="ltr"><a href="#privacy" style="color:inherit">Privacy · Integritet · الخصوصية</a> · Mina utgifter · v29 · 2026-10-31</div>
+  <div class="hint" style="text-align:center" dir="ltr"><a href="#privacy" style="color:inherit">Privacy · Integritet · الخصوصية</a> · Mina utgifter · v30 · 2026-10-31</div>
 </div>
 <div class="wrap" id="privacyView" hidden>
   <header class="top"><h1 id="pvTitle"></h1><div style="display:flex;gap:8px"><button class="btn" data-pv="ar">العربية</button><button class="btn" data-pv="sv">Svenska</button><button class="btn" data-pv="en">English</button><a class="btn" href="#" id="pvBack" style="text-decoration:none;color:inherit;display:inline-flex;align-items:center">←</a></div></header>
@@ -464,7 +465,7 @@ function persistNow(){
   try{localStorage.setItem(LS_KEY,JSON.stringify({tx:S.tx,bills:S.bills,ev:S.ev,goals:S.goals,splits:S.splits,settings:S.settings}))}
   catch(e){if(!_quotaWarned){_quotaWarned=true;toast(L('امتلأ تخزين الجهاز. احذف بعض الصور أو انسخ نسخة احتياطية.','Enhetens lagring är full. Ta bort några bilder eller gör en säkerhetskopia.','Device storage is full. Remove some images or make a backup.'))}}
 }
-function persist(){clearTimeout(_pt);_pt=setTimeout(persistNow,250)}
+function persist(){clearTimeout(_pt);_pt=setTimeout(persistNow,40)}
 addEventListener('pagehide',()=>{if(_pt)persistNow()});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&_pt)persistNow()});
 async function init(){
@@ -622,7 +623,7 @@ function viewTx(v){
     body=`<div class="empty"><b>${L('لا توجد عمليات في هذا الشهر','Inga transaktioner den här månaden','No transactions this month')}</b><span>${L('أضف أول عملية من الأعلى بجملة سريعة أو من النموذج.','Lägg till din första transaktion ovan, med en snabb mening eller formuläret.','Add your first transaction above, with a quick sentence or the form.')}</span>
       ${S.tx.length===0?`<button class="btn" id="sampleBtn">${L('تجربة ببيانات تجريبية','Prova med exempeldata','Try with sample data')}</button>`:''}</div>`;
   }else if(!list.length)body=`<div class="empty">${L('لا نتائج مطابقة.','Inga träffar.','No matches.')}</div>`;
-  else body='<div class="list">'+list.map(x=>`<div class="row" style="border-inline-start:4px solid ${cc(x.category)};padding-inline-start:10px">
+  else body='<div class="list">'+list.map(x=>`<div class="row txr" style="border-inline-start:4px solid ${cc(x.category)};padding-inline-start:10px">
       <div class="t"><b>${esc(x.note||cn(x.category))}</b><span><span class="chip">${CAT_ICON[x.category]||'•'} ${esc(cn(x.category))}</span> ${fmtDay(x.date)} · ${esc(mn(x.method||''))}</span></div>
       <div class="amt ${x.type==='in'?'in':'outc'}">${x.type==='in'?'+':'−'}${money(x.amount)}</div>
       <div class="acts">${x.img?`<button class="thumb" data-img="${esc(x.img)}" data-kind="tx" data-owner="${esc(x.id)}" aria-label="${L('عرض الصورة','Visa bilden','View the image')}"><img src="${imgSrc(x.img)}" alt=""></button>`:`<button class="btn small" data-attach="tx:${esc(x.id)}">${L('إرفاق صورة','Bifoga bild','Attach image')}</button>`}
@@ -1435,6 +1436,7 @@ function recurring(){
       const cats={};c.forEach(x=>cats[x.category]=(cats[x.category]||0)+1);
       let cat=Object.entries(cats).sort((a,b)=>b[1]-a[1])[0][0];
       if(cat==='أخرى'||!OUT_CATS.includes(cat))cat=known?'فواتير':'أخرى';
+      if(!known&&['بقالة','مطاعم','تسوق','صحة'].includes(cat))return;
       res.push({id:k+'|'+Math.round(amount),key:k,name:String(latest.note||k).slice(0,40),amount,day:Math.max(1,Math.min(31,Math.round(med(c.map(x=>+x.date.slice(8)))))),cat,months:months.size,known});
     });
   }
@@ -1518,10 +1520,11 @@ function renderRemind(){
   const el=$('#remind');if(!el)return;
   if(!S.ready||S.tab==='import'){el.innerHTML='';return}
   const list=dueSoon();if(!list.length){el.innerHTML='';return}
-  const rows=list.slice(0,4).map(i=>{
-    const t=i.diff<0?L(`متأخرة ${-i.diff} يوم`,`Försenad ${-i.diff} dagar`,`${-i.diff} days overdue`):i.diff===0?L('اليوم','Idag','Today'):i.diff===1?L('غدًا','Imorgon','Tomorrow'):L(`بعد ${i.diff} أيام`,`Om ${i.diff} dagar`,`In ${i.diff} days`);
-    return `<div class="tip ${i.diff<0?'bad':'warn'}"><span class="badge">${t}</span><span><b>${esc(i.name)}</b> · ${money(i.amount)}</span></div>`}).join('');
-  el.innerHTML=`<div class="panel remindx"><h2>${L('تذكير بالفواتير','Påminnelse om räkningar','Bill reminders')}</h2>${rows}${list.length>4?`<div class="hint">${L(`و${list.length-4} أخرى في تبويب الفواتير`,`och ${list.length-4} till under Räkningar`,`and ${list.length-4} more in the Bills tab`)}</div>`:''}</div>`;
+  if(!['tx','bills','forecast'].includes(S.tab)){el.innerHTML='';notifyOnce(list);return}
+  const chips=list.slice(0,3).map(i=>{
+    const t=i.diff<0?L(`متأخرة ${-i.diff} يوم`,`Försenad ${-i.diff} d`,`${-i.diff} d overdue`):i.diff===0?L('اليوم','Idag','Today'):i.diff===1?L('غدًا','Imorgon','Tomorrow'):L(`بعد ${i.diff} أيام`,`Om ${i.diff} d`,`In ${i.diff} d`);
+    return `<span class="chip ${i.diff<0?'bad':'warn'}">⏰ <b>${esc(i.name)}</b> ${moneyT(i.amount)} · ${t}</span>`}).join('');
+  el.innerHTML=`<div class="remc">${chips}${list.length>3?`<span class="hint">+${list.length-3}</span>`:''}</div>`;
   notifyOnce(list);
 }
 function notifyOnce(list){
@@ -1774,6 +1777,7 @@ function priceChanges(){
   for(const [k,l] of Object.entries(g)){
     const ms=new Set(l.map(x=>x.date.slice(0,7)));if(ms.size<3||l.length/ms.size>1.3)continue;
     const s2=l.slice().sort((a,b)=>a.date.localeCompare(b.date)),last=s2[s2.length-1];
+    if(!REC_RX.test(last.note||'')&&!['فواتير','ترفيه','سكن','مواصلات'].includes(last.category))continue;
     let i=s2.length-2;while(i>=0&&Math.abs(s2[i].amount-last.amount)/last.amount<0.04)i--;
     const prev=s2[i];if(!prev)continue;
     const d=Math.abs(last.amount-prev.amount);if(d<5||d/prev.amount<0.04||d/prev.amount>0.6)continue;
@@ -2049,5 +2053,3 @@ window.addEventListener('hashchange',routePrivacy);
 applyStatic();render();init();routePrivacy();
 if('serviceWorker' in navigator&&location.protocol.startsWith('http')){addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}
 </script>
-
-</body></html>

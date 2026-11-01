@@ -40,7 +40,7 @@ function persistNow(){
   try{localStorage.setItem(LS_KEY,JSON.stringify({tx:S.tx,bills:S.bills,ev:S.ev,goals:S.goals,splits:S.splits,settings:S.settings}))}
   catch(e){if(!_quotaWarned){_quotaWarned=true;toast(L('امتلأ تخزين الجهاز. احذف بعض الصور أو انسخ نسخة احتياطية.','Enhetens lagring är full. Ta bort några bilder eller gör en säkerhetskopia.','Device storage is full. Remove some images or make a backup.'))}}
 }
-function persist(){clearTimeout(_pt);_pt=setTimeout(persistNow,250)}
+function persist(){clearTimeout(_pt);_pt=setTimeout(persistNow,40)}
 addEventListener('pagehide',()=>{if(_pt)persistNow()});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&_pt)persistNow()});
 async function init(){
