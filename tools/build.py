@@ -17,6 +17,7 @@ def rep(old, new, count=1):
 
 # ---- 1. head: PWA tags, drop the artifact-only meta ----
 rep('<meta name="claude:viewport-fit-sides" content="cover">',
+    '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
     '<meta name="theme-color" content="#0d6b55">\n'
     '<meta name="description" content="Mina utgifter / مصروفاتي - personal finance, stored only on your device">\n'
     '<link rel="manifest" href="manifest.webmanifest">\n'
